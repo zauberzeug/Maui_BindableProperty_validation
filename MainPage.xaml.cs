@@ -1,23 +1,23 @@
 ﻿namespace BindableProperty_validation;
-
 public partial class MainPage : ContentPage
 {
-    int count = 0;
-
     public MainPage()
     {
         InitializeComponent();
     }
 
-    private void OnCounterClicked(object sender, EventArgs e)
+    private void TestButton_Clicked(object sender, EventArgs e)
     {
-        count++;
-
-        if (count == 1)
-            CounterBtn.Text = $"Clicked {count} time";
-        else
-            CounterBtn.Text = $"Clicked {count} times";
-
-        SemanticScreenReader.Announce(CounterBtn.Text);
+        try
+        {
+            // This should throw an ArgumentException according to docs
+            // but it doesn't when the validator returns false
+            CustomControl.CustomText = string.Empty;
+            Console.WriteLine("No exception was thrown!");
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"Expected exception: {ex.Message}");
+        }
     }
 }
